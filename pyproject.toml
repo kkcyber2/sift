@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sift"
+version = "1.0.0"
+description = 'Server-side template injection detection engine with template-engine fingerprinting and SARIF output.'
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [{name = "KK (Conan Sultan Khan)", email = "kkdev9715@gmail.com"}]
+keywords = ["sift"]
+
+[project.urls]
+Homepage = "https://github.com/kkcyber2/sift"
+Repository = "https://github.com/kkcyber2/sift"
+
+[tool.setuptools]
+packages = ["sift"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
