@@ -386,7 +386,11 @@ class _VulnerableHandler(BaseHTTPRequestHandler):
     """Renders the q parameter through Jinja2 for real."""
 
     def do_GET(self):  # noqa: N802
-        import jinja2
+        try:
+            import jinja2
+        except ImportError:  # pragma: no cover - only on a bare install
+            self.send_error(503, "jinja2 unavailable")
+            return
 
         qs = urllib.parse.parse_qs(urllib.parse.urlsplit(self.path).query)
         raw = qs.get("q", [""])[0]
@@ -422,9 +426,19 @@ class _SafeHandler(BaseHTTPRequestHandler):
         pass
 
 
+def _has_jinja2() -> bool:
+    try:
+        import jinja2  # noqa: F401
+    except ImportError:
+        return False
+    return True
+
+
 @pytest.fixture
 def server(request):
     handler = getattr(request, "param", _VulnerableHandler)
+    if handler is _VulnerableHandler and not _has_jinja2():
+        pytest.skip("jinja2 not installed: cannot stand up the vulnerable fixture")
     srv = HTTPServer(("127.0.0.1", 0), handler)
     thread = threading.Thread(target=srv.serve_forever, daemon=True)
     thread.start()

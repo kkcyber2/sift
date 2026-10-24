@@ -10,11 +10,16 @@ readme = "README.md"
 requires-python = ">=3.9"
 license = {text = "MIT"}
 authors = [{name = "Konain Sultan Khan (KK)", email = "kkdev9715@gmail.com"}]
-keywords = ["sift"]
+keywords = ["security", "ssti", "scanner", "sarif", "appsec"]
 
 [project.urls]
 Homepage = "https://github.com/kkcyber2/sift"
 Repository = "https://github.com/kkcyber2/sift"
+
+[project.optional-dependencies]
+# jinja2 is a test-only dependency: the end-to-end test stands up a server that
+# genuinely evaluates Jinja2, so the differential has something real to detect.
+dev = ["pytest>=7", "jinja2>=3"]
 
 [tool.setuptools]
 packages = ["sift"]
